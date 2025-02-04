@@ -25,6 +25,9 @@ uint32_t currentInode = 0;
 int colour_scheme[] = {7, 0};
 int custom_colour_scheme = 0;
 
+void panic() {
+	for(;;) {}
+}
 
 static void play_sound(uint32_t nFrequence) {
 	uint32_t Div;
@@ -735,11 +738,13 @@ void _main(multiboot_info_t* mbd, unsigned int magic) {
 	if(magic != MULTIBOOT_BOOTLOADER_MAGIC) {
 		printf(KERNEL_PANIC_ERROR);
 		printf("Invalid magic number!\r\n");
+		panic();
 	}
 
 	if(!(mbd->flags >> 6 & 0x1)) {
 		printf(KERNEL_PANIC_ERROR);
 		printf("Invalid memory map given by GRUB bootloader\r\n");
+		panic();
 	}
 	initialize_memory_manager(mbd->mmap_addr, mbd->mmap_length);
 
